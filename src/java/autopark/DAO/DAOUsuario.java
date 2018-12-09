@@ -1,7 +1,7 @@
-
 package autopark.DAO;
 
-import autopark.Business.Usuario;
+import autopark.business.CRUD;
+import autopark.business.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,12 +13,12 @@ public class DAOUsuario implements CRUD<Usuario>{
     private static Conexion objConn = Conexion.InstanciaConn();
     ResultSet rs;
     
-    
+    @Override
     public boolean insert(Usuario x) {
-        String query = "INSERT INTO USUARIO(USERNAME, PASSWORD) VALUES (?,?);";
+        String query = "INSERT INTO USUARIO(USUARIO, PASSWORD) VALUES (?,?);";
         try {
             PreparedStatement ps = objConn.getConn().prepareStatement(query);
-            ps.setString(1, x.getUsername());
+            ps.setString(1, x.getUsuario());
             ps.setString(2, x.getPassword());
             
             if(ps.executeUpdate() > 0){
@@ -30,7 +30,7 @@ public class DAOUsuario implements CRUD<Usuario>{
         return false;
     }
 
-    
+    @Override
     public boolean update(Usuario x) {
         String query = "UPDATE USUARIO SET PASSWORD = ? WHERE IDUSUARIO = ?;";
         try {
@@ -46,7 +46,7 @@ public class DAOUsuario implements CRUD<Usuario>{
         return false;
     }
 
-    
+    @Override
     public boolean delete(int x) {
         String query = "DELETE FROM USUARIO WHERE IDUSUARIO = ?;";
         try {
@@ -62,7 +62,7 @@ public class DAOUsuario implements CRUD<Usuario>{
         return false;
     }
 
-    
+    @Override
     public ArrayList<Usuario> select() {
         String query = "SELECT * FROM USUARIO;";
         ArrayList<Usuario> usuarios = new ArrayList<>();
@@ -71,7 +71,7 @@ public class DAOUsuario implements CRUD<Usuario>{
             rs = ps.executeQuery();
             
             while(rs.next()){
-                usuarios.add(new Usuario(rs.getInt("idUsuario"), rs.getString("username"), rs.getString("password")));
+                usuarios.add(new Usuario(rs.getInt("idUsuario"), rs.getString("usuario"), rs.getString("password")));
             }
             return usuarios;
         } catch (SQLException ex) {

@@ -1,17 +1,11 @@
-<%-- 
-    Document   : footer
-    Created on : 05-12-2018, 20:44:59
-    Author     : S7B4N
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+<footer class="py-5 bg-dark" style="height: 50px;">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Todos los derechos reservados</p>
+    </div>
+    <!-- /.container -->
+</footer>
+<!-- Validacion de sesion -->
+<%
+    if(session.getAttribute("Usuario") == null){
+    response.sendRedirect("/ExamenDEJ/pages/login.jsp");
+}%>
