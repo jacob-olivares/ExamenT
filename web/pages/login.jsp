@@ -13,7 +13,7 @@
     <body>
         <div class="container" style="width: 400px; margin-top: 80px;">
             <div class="card card-container">
-                <img id="profile-img" class="profile-img-card" src="/ExamenDEJ/img/login.png" style="height: 300px" />
+                <img id="profile-img" class="profile-img-card" src="/ExamenDEJ1/img/login.png" style="height: 300px" />
                 <p id="profile-name" class="profile-name-card"></p>
                 <form class="form-signin" action="${pageContext.request.contextPath}/ServletLogin" method="POST">
                     <span id="reauth-email" class="reauth-email"></span>

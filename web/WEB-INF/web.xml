@@ -4,9 +4,17 @@
         <servlet-name>ServletLogin</servlet-name>
         <servlet-class>autopark.services.ServletLogin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletEliminar</servlet-name>
+        <servlet-class>autopark.services.ServletEliminar</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletEliminar</servlet-name>
+        <url-pattern>/ServletEliminar</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -4,11 +4,13 @@
     Author     : S7B4N
 --%>
 
+<%@page import="autopark.business.Ticket"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="autopark.business.Estacionamiento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    ArrayList<Estacionamiento> estacionamientos = (ArrayList < Estacionamiento >) session.getAttribute("es"); %>
+    ArrayList<Estacionamiento> estacionamientos = (ArrayList < Estacionamiento >) session.getAttribute("es");
+    String array = (String) session.getAttribute("tickets"); %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,6 +34,7 @@
                         <td>
                             <input type="text" id="rut" name="rut_cliente" required oninput="checkRut(this)" placeholder="Ingrese RUT" class="form-control form-control"
                                    style="margin-left: 20px;">
+                            <input type="text" id="array" value="<%=array%>" hidden>
                         </td>
                     </tr>
                     <tr>
@@ -61,18 +64,21 @@
                                 <% }%>
                             </select>
                         </td>
+                        
                         <td><button onclick="agregarATabla()" class="form-control">Agregar</button></td>
                     </tr>
                 </table>    
+                            
                             <table class="table table-striped" id="tabla">
                                 <thead>
                                     <tr>
                                         <th>Estacionamiento</th>
                                         <th>Monto</th>
                                         <th>N° Ticket</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tb">
                                 </tbody>
                             </table>           
         </main>
@@ -83,12 +89,49 @@
     <jsp:include page="../contents/validarRut.jsp"></jsp:include>
     <script>
         function agregarATabla(){
+            var arrayString = document.getElementById("array").value;
+            var arrayTickets = JSON.parse(arrayString);
             var sel = document.getElementById("estas");
             var text= sel.options[sel.selectedIndex].text;
-            var table = document.getElementById("tabla");
-            var row = table.insertRow(1);
-            var cell1 = row.insertCell(0);
-            cell1.innerHTML = text;
+            var value= sel.options[sel.selectedIndex].value;
+            var table = document.getElementById('tabla').getElementsByTagName('tbody')[0];
+            var iconHtml = '<i class="material-icons">clear</i>';
+            var str = '<a href="#" onclick="eliminar(this);">' + iconHtml + '</a>';
+            var newRow   = table.insertRow(table.rows.length);
+            var newCell1  = newRow.insertCell(0);
+            var newCell2  = newRow.insertCell(1);
+            var newCell3  = newRow.insertCell(2);
+            var newCell4  = newRow.insertCell(3);
+            
+            
+            for (var i = 0; i < arrayTickets.length; i++) {
+                var obj = arrayTickets[i];
+                if(value === obj.idEstacionamiento){
+                    newCell1.innerHTML = text;
+                    newCell2.innerHTML = obj.monto;
+                    newCell3.innerHTML = obj.idTicket;
+                    newCell4.innerHTML = str;
+                    newCell1.appendChild();
+                }
+            }
+
+        }
+        
+        function eliminar(r){
+            var index, table = document.getElementById('tabla');
+            for(var i = 1; i < table.rows.length; i++)
+            {
+                table.rows[i].cells[3].onclick = function()
+                {
+                    var c = confirm("Quieres eliminar el ticket?");
+                    if(c === true)
+                    {
+                        index = this.parentElement.rowIndex;
+                        table.deleteRow(index);
+                    }
+                    //console.log(index);
+                };
+            }
         }
     </script>
 </html>
