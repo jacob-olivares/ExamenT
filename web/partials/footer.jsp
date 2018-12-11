@@ -7,5 +7,5 @@
 <!-- Validacion de sesion -->
 <%
     if(session.getAttribute("Usuario") == null){
-    response.sendRedirect("/ExamenDEJ/pages/login.jsp");
+    response.sendRedirect("/ExamenDEJ1/pages/login.jsp");
 }%>

@@ -8,6 +8,14 @@
         <servlet-name>ServletEliminar</servlet-name>
         <servlet-class>autopark.services.ServletEliminar</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletBuscarPago</servlet-name>
+        <servlet-class>autopark.services.ServletBuscarPago</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletPedirVoucher</servlet-name>
+        <servlet-class>autopark.services.ServletPedirVoucher</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -15,6 +23,14 @@
     <servlet-mapping>
         <servlet-name>ServletEliminar</servlet-name>
         <url-pattern>/ServletEliminar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletBuscarPago</servlet-name>
+        <url-pattern>/ServletBuscarPago</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletPedirVoucher</servlet-name>
+        <url-pattern>/ServletPedirVoucher</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

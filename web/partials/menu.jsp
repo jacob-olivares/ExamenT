@@ -9,7 +9,7 @@
       <a class="nav-link" href="/ExamenDEJ1/pages/index.jsp">Inicio</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Ver Pagos/Compras</a>
+      <a class="nav-link" href="/ExamenDEJ1/pages/verPagos.jsp">Ver Pagos/Compras</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Ayuda</a>

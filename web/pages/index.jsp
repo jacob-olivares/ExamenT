@@ -4,13 +4,14 @@
     Author     : S7B4N
 --%>
 
+<%@page import="com.google.gson.Gson"%>
 <%@page import="autopark.business.Ticket"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="autopark.business.Estacionamiento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     ArrayList<Estacionamiento> estacionamientos = (ArrayList < Estacionamiento >) session.getAttribute("es");
-    String array = (String) session.getAttribute("tickets"); %>
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -26,6 +27,7 @@
                 if (session.getAttribute("Usuario") == null) {
                     session.setAttribute("Usuario", request.getAttribute("User"));
                 }
+                
             %>
             <form action="${pageContext.request.contextPath}/ServletPagar" method="post">
                 <table>
@@ -34,12 +36,26 @@
                         <td>
                             <input type="text" id="rut" name="rut_cliente" required oninput="checkRut(this)" placeholder="Ingrese RUT" class="form-control form-control"
                                    style="margin-left: 20px;">
-                            <input type="text" id="array" value="<%=array%>" hidden>
                         </td>
+                        <td>
+                            <label style="margin-left: 100px;" >Opcion de pago</label>
+                        </td>
+                        <td>  <fieldset style="margin-left: 20px;" id="group1" name="opPago" class="form-control">
+                                <input type="radio" value="1" name="group1">Pago en Linea
+                                <input type="radio" value="2" name="group1">Transferencia
+                                <input type="radio" value="3" name="group1">Orden de compra
+                            </fieldset></td>
                     </tr>
                     <tr>
                         <td>Nombre: </td>
                         <td><input type="text" name="nombre" class="form-control" placeholder="Ingrese nombre" required style="margin-left: 20px;"></td>
+                        <td>
+                            <label style="margin-left: 100px;" >Opcion de envio de boleta</label>
+                        </td>   
+                        <td>  <fieldset style="margin-left: 20px;" id="group2" name="opEnv" class="form-control">
+                                <input type="radio" value="1" name="group2">Correo electronico
+                                <input type="radio" value="2" name="group2">Direccion particular
+                            </fieldset></td>
                     </tr>
                     <tr>
                         <td>Telefono: </td>
@@ -50,7 +66,8 @@
                         <td><input type="email" name="nombre" class="form-control" placeholder="Ingrese email" required style="margin-left: 20px;"></td>
                     </tr>
                 </table>
-                </form>
+                
+
                 <table>
                     <tr>
                         <td><p>Seleccione estacionamiento, indique la cantidad de dinero que mostro aplicacion movil:</p></td>
@@ -61,11 +78,12 @@
                                 <option value="0">Estacionamientos</option>
                                 <% for(Estacionamiento e: estacionamientos){ %>
                                 <option value="<%=e.getIdEstacionamiento()%>"><%=e.getLugar()%></option>
-                                <% }%>
+                                <%
+                                }%>
                             </select>
                         </td>
                         
-                        <td><button onclick="agregarATabla()" class="form-control">Agregar</button></td>
+                        <td><button onclick="agregarATabla()" class="form-control">Agregar</button></td>  <td><button onclick="totalPagar()" type="submit" style="margin-left: 100px;background-color: lightblue;" class="form-control">Pagar</button></td>
                     </tr>
                 </table>    
                             
@@ -78,9 +96,10 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody id="tb">
+                                <tbody>
                                 </tbody>
-                            </table>           
+                            </table>   
+            </form>
         </main>
         <footer class="fixed-bottom">
             <%@include  file="../partials/footer.jsp" %>
@@ -88,36 +107,51 @@
     </body>
     <jsp:include page="../contents/validarRut.jsp"></jsp:include>
     <script>
+
         function agregarATabla(){
-            var arrayString = document.getElementById("array").value;
-            var arrayTickets = JSON.parse(arrayString);
             var sel = document.getElementById("estas");
             var text= sel.options[sel.selectedIndex].text;
             var value= sel.options[sel.selectedIndex].value;
-            var table = document.getElementById('tabla').getElementsByTagName('tbody')[0];
+            var table = document.getElementById('tabla');
             var iconHtml = '<i class="material-icons">clear</i>';
             var str = '<a href="#" onclick="eliminar(this);">' + iconHtml + '</a>';
-            var newRow   = table.insertRow(table.rows.length);
+            var newRow   = table.insertRow(1);
             var newCell1  = newRow.insertCell(0);
             var newCell2  = newRow.insertCell(1);
             var newCell3  = newRow.insertCell(2);
             var newCell4  = newRow.insertCell(3);
-            
-            
-            for (var i = 0; i < arrayTickets.length; i++) {
-                var obj = arrayTickets[i];
-                if(value === obj.idEstacionamiento){
-                    newCell1.innerHTML = text;
-                    newCell2.innerHTML = obj.monto;
-                    newCell3.innerHTML = obj.idTicket;
-                    newCell4.innerHTML = str;
-                    newCell1.appendChild();
-                }
+                        
+            if(value.localeCompare("0") === 0){
+                alert("Ingrese estacionamiento!");
             }
-
+            
+            if(value.localeCompare("1") === 0){
+                newCell1.innerHTML = text;
+                newCell2.innerHTML = 500;
+                newCell3.innerHTML = 1;
+                newCell4.innerHTML = str;
+            }
+            if(value.localeCompare("2") === 0){
+                newCell1.innerHTML = text;
+                newCell2.innerHTML = 1000;
+                newCell3.innerHTML = 2;
+                newCell4.innerHTML = str;
+            }
+            if(value.localeCompare("3") === 0){
+                newCell1.innerHTML = text;
+                newCell2.innerHTML = 1500;
+                newCell3.innerHTML = 3;
+                newCell4.innerHTML = str;
+            }
+            if(value.localeCompare("4") === 0){
+                newCell1.innerHTML = text;
+                newCell2.innerHTML = 2000;
+                newCell3.innerHTML = 4;
+                newCell4.innerHTML = str;
+            }         
         }
-        
-        function eliminar(r){
+                
+    function eliminar(r){
             var index, table = document.getElementById('tabla');
             for(var i = 1; i < table.rows.length; i++)
             {
@@ -134,4 +168,5 @@
             }
         }
     </script>
+    
 </html>
